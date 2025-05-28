@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Register.css';
-import { PasswordInput } from '../components/PasswordInput';
-import { EmailInput } from '../components/EmailInput';
-import { UsernameInput } from '../components/UsernameInput';
-import { ConfirmPasswordInput } from '../components/ConfirmPasswordInput';
+import { PasswordInput } from '../components/registerComponents/PasswordInput';
+import { EmailInput } from '../components/registerComponents/EmailInput';
+import { UsernameInput } from '../components/registerComponents/UsernameInput';
+import { ConfirmPasswordInput } from '../components/registerComponents/ConfirmPasswordInput';
 
 export const Register = () => {
 	const [password, setPassword] = useState('');

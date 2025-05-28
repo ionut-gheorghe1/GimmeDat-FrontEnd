@@ -56,7 +56,7 @@ export const EmailInput = () => {
 			{inputRef.current?.matches(':focus') &&
 			emailError &&
 			!emailError.isValid ? (
-				<div>
+				<div className='error-message-group'>
 					{Object.values(emailError.messages)
 						.filter((message) => message != null)
 						.map((message, index) => (

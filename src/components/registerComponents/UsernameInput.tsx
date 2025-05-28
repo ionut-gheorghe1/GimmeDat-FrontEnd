@@ -57,7 +57,7 @@ export const UsernameInput = () => {
 			{inputRef.current?.matches(':focus') &&
 			usernameError &&
 			!usernameError.isValid ? (
-				<div>
+				<div className='error-message-group'>
 					{Object.values(usernameError.messages)
 						.filter((message) => message != null)
 						.map((message, index) => (

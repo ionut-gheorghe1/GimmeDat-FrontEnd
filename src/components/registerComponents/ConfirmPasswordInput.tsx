@@ -49,11 +49,11 @@ export const ConfirmPasswordInput = ({ password }: { password: string }) => {
 			{inputRef.current?.matches(':focus') &&
 			confirmPasswordError &&
 			!confirmPasswordError.isValid ? (
-				<div>
+				<div className='error-message-group'>
 					{Object.values(confirmPasswordError.messages)
-						.filter((messages) => messages != null)
-						.map((messages, index) => (
-							<div key={index}>{messages}</div>
+						.filter((message) => message != null)
+						.map((message, index) => (
+							<div key={index}>{message}</div>
 						))}
 				</div>
 			) : null}

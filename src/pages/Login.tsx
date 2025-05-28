@@ -1,3 +1,8 @@
+import { Link } from 'react-router-dom';
+import { PasswordField } from '../components/loginComponents/PasswordField';
+import { UsernameField } from '../components/loginComponents/UsernameField';
+import './Register.css';
+
 export const Login = () => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -6,13 +11,16 @@ export const Login = () => {
 		} catch (error) {}
 	};
 	return (
-		<div>
-			<div>Login</div>
+		<div className='login-container'>
+			<h1>Log in</h1>
 			<form onSubmit={handleSubmit}>
-				<input type='email' />
-				<input type='password' />
+				<UsernameField />
+				<PasswordField />
 				<button type='submit'>Log in</button>
 			</form>
+			<div className='register-link'>
+				Don't have an account? <Link to='/register'> Register Here</Link>
+			</div>
 		</div>
 	);
 };

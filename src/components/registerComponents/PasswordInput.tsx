@@ -54,7 +54,6 @@ export const PasswordInput = ({
 				ref={inputRef}
 				id='password'
 				name='password'
-				placeholder='Test@pass1'
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
 				required
@@ -62,7 +61,7 @@ export const PasswordInput = ({
 			{inputRef.current?.matches(':focus') &&
 			passwordError &&
 			!passwordError.isValid ? (
-				<div>
+				<div className='error-message-group'>
 					{Object.values(passwordError.messages)
 						.filter((message) => message != null)
 						.map((message, index) => (
