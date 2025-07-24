@@ -26,7 +26,7 @@
 	border-radius: 4px;
 }
 
-button {
+.submit-btn {
 	width: 100%;
 	padding: 0.75rem;
 	background-color: #ef6461;
@@ -48,6 +48,22 @@ button:disabled {
 
 .login-link,
 .register-link {
+	text-decoration: none;
+	color: blue;
+}
+
+.login-link-container,
+.register-link-container {
 	margin-top: 1rem;
 	text-align: center;
+}
+
+.logo-link {
+	color: black;
+	text-decoration: none;
+}
+
+.title-h1 {
+	display: flex;
+	justify-content: center;
 }

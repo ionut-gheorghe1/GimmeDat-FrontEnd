@@ -1,27 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import type { RegisterFieldProps, UsernameValidationResult } from '../types';
+import { CreateField } from '../CreateField';
 
-interface UsernameValidationResult {
-	isValid: boolean;
-	messages: {
-		length: string | null;
-		allowedChars: string | null;
-		noSpaces: string | null;
-		noSpecialStartEnd: string | null;
-	};
-}
-
-export const UsernameInput = () => {
-	const [username, setUsername] = useState('');
-	const [usernameError, setUsernameError] =
-		useState<UsernameValidationResult | null>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
-
-	const validateUsername = (username: string): UsernameValidationResult => {
+export const UsernameInput = ({
+	name,
+	value,
+	onChange,
+	error,
+	setError
+}: RegisterFieldProps) => {
+	const validateUsername = (value: string): UsernameValidationResult => {
 		const requirements = {
-			length: username.length >= 3 && username.length <= 20,
-			allowedChars: /^[a-zA-Z0-9_.-]+$/.test(username),
-			noSpaces: !/\s/.test(username),
-			noSpecialStartEnd: !/^[_.-]|[_.-]$/.test(username)
+			length: value.length >= 3 && value.length <= 20,
+			allowedChars: /^[a-zA-Z0-9_.-]+$/.test(value),
+			noSpaces: !/\s/.test(value),
+			noSpecialStartEnd: !/^[_.-]|[_.-]$/.test(value)
 		};
 		const isValid = Object.values(requirements).every(Boolean);
 		return {
@@ -38,33 +31,27 @@ export const UsernameInput = () => {
 			}
 		};
 	};
+
 	useEffect(() => {
-		setUsernameError(validateUsername(username));
-	}, [username]);
+		if (setError) {
+			setError((prev) => ({
+				...prev,
+				[name]: validateUsername(value)
+			}));
+		}
+	}, [value]);
 
 	return (
-		<div className='form-group'>
-			<label htmlFor='username'>Username</label>
-			<input
+		<>
+			<CreateField
+				name={name}
+				value={value}
+				onChange={onChange}
+				error={error}
 				type='username'
-				ref={inputRef}
-				id='username'
-				name='username'
-				value={username}
-				onChange={(e) => setUsername(e.target.value)}
-				required
+				id={name}
+				label='Username'
 			/>
-			{inputRef.current?.matches(':focus') &&
-			usernameError &&
-			!usernameError.isValid ? (
-				<div className='error-message-group'>
-					{Object.values(usernameError.messages)
-						.filter((message) => message != null)
-						.map((message, index) => (
-							<div key={index}>{message}</div>
-						))}
-				</div>
-			) : null}
-		</div>
+		</>
 	);
 };

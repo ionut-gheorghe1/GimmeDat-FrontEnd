@@ -1,24 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import type {
+	ConfirmPasswordProps,
+	ConfirmPasswordValidationResult
+} from '../types';
+import { CreateField } from '../CreateField';
 
-interface ConfirmPasswordValidationResult {
-	isValid: Boolean;
-	messages: {
-		match: string | null;
-	};
-}
-
-export const ConfirmPasswordInput = ({ password }: { password: string }) => {
-	const [confirmPassword, setConfirmPassword] = useState<string>('');
-	const [confirmPasswordError, setConfirmPasswordError] =
-		useState<ConfirmPasswordValidationResult | null>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
-
+export const ConfirmPasswordInput = ({
+	name,
+	value,
+	onChange,
+	error,
+	setError,
+	password
+}: ConfirmPasswordProps) => {
 	const validateConfirmPassword = (
 		password: string,
-		confirmPassword: string
+		value: string
 	): ConfirmPasswordValidationResult | null => {
 		const requirements = {
-			match: password === confirmPassword
+			match: password === value
 		};
 
 		const isValid = Object.values(requirements).every(Boolean);
@@ -31,32 +31,24 @@ export const ConfirmPasswordInput = ({ password }: { password: string }) => {
 	};
 
 	useEffect(() => {
-		setConfirmPasswordError(validateConfirmPassword(password, confirmPassword));
-	}, [confirmPassword]);
-
+		if (setError) {
+			setError((prev) => ({
+				...prev,
+				[name]: validateConfirmPassword(password, value)
+			}));
+		}
+	}, [value]);
 	return (
-		<div className='form-group'>
-			<label htmlFor='confirmPassword'>Confirm Password</label>
-			<input
+		<>
+			<CreateField
+				name={name}
+				value={value}
+				onChange={onChange}
+				error={error}
 				type='password'
-				ref={inputRef}
-				id='confirmPassword'
-				name='confirmPassword'
-				value={confirmPassword}
-				onChange={(e) => setConfirmPassword(e.target.value)}
-				required
+				id={name}
+				label='Confirm Password'
 			/>
-			{inputRef.current?.matches(':focus') &&
-			confirmPasswordError &&
-			!confirmPasswordError.isValid ? (
-				<div className='error-message-group'>
-					{Object.values(confirmPasswordError.messages)
-						.filter((message) => message != null)
-						.map((message, index) => (
-							<div key={index}>{message}</div>
-						))}
-				</div>
-			) : null}
-		</div>
+		</>
 	);
 };

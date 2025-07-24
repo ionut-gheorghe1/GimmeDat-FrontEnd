@@ -1,27 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import type { EmailValidationResult, RegisterFieldProps } from '../types';
+import { CreateField } from '../CreateField';
 
-interface EmailValidationResult {
-	isValid: boolean;
-	messages: {
-		format: string | null;
-		domain: string | null;
-		tld: string | null;
-		validChars: string | null;
-	};
-}
-
-export const EmailInput = () => {
-	const [email, setEmail] = useState('');
-	const [emailError, setEmailError] = useState<EmailValidationResult | null>(
-		null
-	);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const validateEmail = (email: string): EmailValidationResult => {
+export const EmailInput = ({
+	name,
+	value,
+	onChange,
+	error,
+	setError
+}: RegisterFieldProps) => {
+	const validateEmail = (value: string): EmailValidationResult => {
 		const requirements = {
-			format: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-			domain: /@[^\s@]+\.[^\s@]+$/.test(email),
-			tld: /\.\w{2,}$/.test(email),
-			validChars: /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email)
+			format: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+			domain: /@[^\s@]+\.[^\s@]+$/.test(value),
+			tld: /\.\w{2,}$/.test(value),
+			validChars: /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(value)
 		};
 		const isValid = Object.values(requirements).every(Boolean);
 		return {
@@ -38,32 +31,25 @@ export const EmailInput = () => {
 	};
 
 	useEffect(() => {
-		setEmailError(validateEmail(email));
-	}, [email]);
+		if (setError) {
+			setError((prev) => ({
+				...prev,
+				[name]: validateEmail(value)
+			}));
+		}
+	}, [value]);
 
 	return (
-		<div className='form-group'>
-			<label htmlFor='email'>Email</label>
-			<input
+		<>
+			<CreateField
+				name={name}
+				value={value}
+				onChange={onChange}
+				error={error}
 				type='email'
-				ref={inputRef}
-				id='email'
-				name='email'
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				required
+				id={name}
+				label='Email'
 			/>
-			{inputRef.current?.matches(':focus') &&
-			emailError &&
-			!emailError.isValid ? (
-				<div className='error-message-group'>
-					{Object.values(emailError.messages)
-						.filter((message) => message != null)
-						.map((message, index) => (
-							<div key={index}>{message}</div>
-						))}
-				</div>
-			) : null}
-		</div>
+		</>
 	);
 };

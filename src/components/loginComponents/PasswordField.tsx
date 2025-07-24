@@ -1,18 +1,16 @@
-import { useState } from 'react';
+import type { LoginFieldProps } from '../types';
 
-export const PasswordField = () => {
-	const [password, setPassword] = useState('');
-
+export const PasswordField = ({ name, value, onChange }: LoginFieldProps) => {
 	return (
 		<div className='form-group'>
-			<label htmlFor='password'>Password</label>
+			<label htmlFor={name}>Password</label>
 			<input
-				type='password'
-				id='password'
-				name='password'
+				type={name}
+				id={name}
+				name={name}
 				placeholder='YourPassword'
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
+				value={value}
+				onChange={onChange}
 				required
 			/>
 		</div>

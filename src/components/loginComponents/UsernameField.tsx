@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import type { LoginFieldProps } from '../types';
 
-export const UsernameField = () => {
-	const [username, setUsername] = useState('');
-
+export const UsernameField = ({ name, value, onChange }: LoginFieldProps) => {
 	return (
 		<div className='form-group'>
-			<label htmlFor='username'>Username</label>
+			<label htmlFor={name}>Username</label>
 			<input
-				type='username'
-				id='username'
-				name='username'
-				value={username}
-				onChange={(e) => setUsername(e.target.value)}
+				type={name}
+				id={name}
+				name={name}
+				value={value}
+				placeholder='Username'
+				onChange={onChange}
+				autoComplete='off'
 				required
 			/>
 		</div>
